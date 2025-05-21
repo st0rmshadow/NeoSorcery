@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+if [[ -z "$1" ]]; then
+  echo "Installed packages:"
+  ls var/installed | sed 's/.manifest$//'
+else
+  cat "var/installed/$1.manifest"
+fi

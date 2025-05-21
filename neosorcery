@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+SPELLS_DIR="./spells"
+INSTALLED_DIR="./var/installed"
+
+main_menu() {
+  while true; do
+    CHOICE=$(dialog --clear --stdout --title "NeoSorcerer" \
+      --menu "Choose an action" 15 50 6 \
+      1 "Cast a Spell" \
+      2 "Dispel a Spell" \
+      3 "Gaze at Installed" \
+      4 "Update Spells (scribe)" \
+      Q "Quit")
+
+    case $CHOICE in
+      1) cast_menu ;;
+      2) dispel_menu ;;
+      3) gaze_menu ;;
+      4) ./scribe ;;
+      Q) clear; exit 0 ;;
+    esac
+  done
+}
+
+cast_menu() {
+  SPELL=$(find "$SPELLS_DIR" -mindepth 1 -maxdepth 1 -type d | sed 's|.*/||' | sort | \
+          dialog --stdout --menu "Available Spells to Cast" 20 50 15)
+  [[ -n "$SPELL" ]] && ./cast "$SPELL"
+}
+
+dispel_menu() {
+  PKG=$(find "$INSTALLED_DIR" -name "*.manifest" | sed 's|.*/||;s|\.manifest$||' | sort | \
+        dialog --stdout --menu "Installed Spells to Dispel" 20 50 15)
+  [[ -n "$PKG" ]] && ./dispel "$PKG"
+}
+
+gaze_menu() {
+  PKG=$(find "$INSTALLED_DIR" -name "*.manifest" | sed 's|.*/||;s|\.manifest$||' | sort | \
+        dialog --stdout --menu "Installed Spells" 20 50 15)
+  [[ -n "$PKG" ]] && dialog --textbox "$INSTALLED_DIR/$PKG.manifest" 30 80
+}
+
+main_menu

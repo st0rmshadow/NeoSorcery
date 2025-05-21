@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+if command -v screen >/dev/null; then
+  screen -dmS cast_$1 zsh -c "./cast_internal $1"
+else
+  ./cast_internal $1
+fi

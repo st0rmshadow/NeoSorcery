@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+GRIMOIRE_URL="https://github.com/st0rmshadow/NeoSorcerer_grimoire.git"
+GRIMOIRE_DIR="./spells"
+echo "Updating spells from $GRIMOIRE_URL..."
+if [[ -d "$GRIMOIRE_DIR/.git" ]]; then
+  git -C "$GRIMOIRE_DIR" pull
+else
+  rm -rf "$GRIMOIRE_DIR"
+  git clone "$GRIMOIRE_URL" "$GRIMOIRE_DIR"
+fi

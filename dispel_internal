@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+PACKAGE=$1
+MANIFEST="var/installed/$PACKAGE.manifest"
+if [[ ! -f "$MANIFEST" ]]; then
+  echo "No manifest found for $PACKAGE"
+  exit 1
+fi
+echo "Dispelling $PACKAGE..."
+while read -r file; do
+  sudo rm -vf "$file"
+done < "$MANIFEST"
+rm "$MANIFEST"

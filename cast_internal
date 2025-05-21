@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+SPELL_NAME="$1"
+SPELL_DIR="./spells/$SPELL_NAME"
+if [[ ! -d "$SPELL_DIR" ]]; then
+  echo "Spell '$SPELL_NAME' not found."
+  exit 1
+fi
+source "$SPELL_DIR/SPELL"
+if [[ -f "$SPELL_DIR/depends" ]]; then
+  echo "Resolving dependencies for $SPELL_NAME..."
+  while read -r dep; do
+    echo "Casting dependency: $dep"
+    ./cast "$dep"
+  done < "$SPELL_DIR/depends"
+fi
+cd "$SPELL_DIR" || exit 1
+echo "Casting spell: $SPELL_NAME"
+zsh ./build
+find /usr -newermt "$(date -d '5 minutes ago' '+%Y-%m-%d %H:%M:%S')" > "../../var/installed/$SPELL_NAME.manifest"
