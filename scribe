@@ -1,28 +1,32 @@
-# Resolve grimoire paths
-if [[ "$1" == "-h" || "$1" == "--help" || "$1" == "help" ]]; then
-  echo "Usage: scribe
-Options:
-  -h, --help     Show this help message and exit
+#!/usr/bin/env bash
 
-Description:
-  Pulls or updates the system grimoire from the remote Git repository."
+# Require root
+if [[ "$EUID" -ne 0 ]]; then
+  echo "Error: This command must be run as root or with sudo." >&2
+  exit 1
+fi
+
+GRIMOIRE_URL="https://github.com/st0rmshadow/NeoSorcerer_grimoire.git"
+GRIMOIRE_DIR="/etc/neosorcery/grimoire"
+
+# Help
+if [[ "$1" == "-h" || "$1" == "--help" || "$1" == "help" ]]; then
+  echo "Usage: scribe"
+  echo ""
+  echo "Options:"
+  echo "  --help       Show this help message"
+  echo ""
+  echo "Description:"
+  echo "  Updates the global grimoire from the official Git repository."
+  echo "  Future options like --user and --alt will be supported later."
   exit 0
 fi
 
-if [[ -d "$HOME/.sorcery/grimoire" ]]; then
-  GRIMOIRE_PATH_USER="$HOME/.sorcery/grimoire"
-else
-  GRIMOIRE_PATH_USER=""
-fi
-GRIMOIRE_PATH_GLOBAL="/etc/neosorcery/grimoire"
+echo "Updating global grimoire at $GRIMOIRE_DIR from $GRIMOIRE_URL..."
 
-#!/usr/bin/env zsh
-GRIMOIRE_URL="https://github.com/st0rmshadow/NeoSorcerer_grimoire.git"
-GRIMOIRE_DIR=""$GRIMOIRE_PATH_USER" "$GRIMOIRE_PATH_GLOBAL""
-echo "Updating spells from $GRIMOIRE_URL..."
 if [[ -d "$GRIMOIRE_DIR/.git" ]]; then
-  git -C "$GRIMOIRE_DIR" pull && echo "Pulled latest changes."
+  git -C "$GRIMOIRE_DIR" pull && echo "Grimoire updated."
 else
   rm -rf "$GRIMOIRE_DIR"
-  git clone "$GRIMOIRE_URL" "$GRIMOIRE_DIR" && echo "Cloned new grimoire."
+  git clone "$GRIMOIRE_URL" "$GRIMOIRE_DIR" && echo "Grimoire cloned."
 fi
