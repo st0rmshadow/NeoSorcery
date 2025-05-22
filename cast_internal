@@ -8,6 +8,12 @@ if [[ -z "$SPELL_NAME" ]]; then
 fi
 
 if [[ ! -d "$SPELL_DIR" ]]; then
+  echo "Checking remote grimoire for spell \"$SPELL_NAME\"..." >&2
+  if curl -s --head "https://github.com/st0rmshadow/NeoSorcerer_grimoire/tree/main/$SPELL_NAME" | grep "200 OK" > /dev/null; then
+    echo "Spell \"$SPELL_NAME\" is available in the remote grimoire. Try running: ./scribe" >&2
+  else
+    echo "Spell \"$SPELL_NAME\" does not exist in local or remote grimoire." >&2
+  fi
   echo "Error: Spell \"$SPELL_NAME\" does not exist in spells directory." >&2
   exit 1
 fi

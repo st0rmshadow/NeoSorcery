@@ -2,15 +2,25 @@
 
 echo "Configuring NeoSorcery..."
 
-# Default install prefix
+# Defaults
 PREFIX="/usr"
+ENABLE_GUI=true
+ENABLE_HEADLESS=false
+CONFIG_FILE="/etc/sorcery.conf"
+LOCAL_CONFIG="$HOME/.sorcery/sorcery.local.conf"
 
-# Parse options
+# Parse command-line options
 while [[ "$1" != "" ]]; do
   case $1 in
     --prefix )
       shift
       PREFIX=$1
+      ;;
+    --enable-gui )
+      ENABLE_GUI=true
+      ;;
+    --enable-headless )
+      ENABLE_HEADLESS=true
       ;;
     * )
       echo "Unknown option: $1"
@@ -19,14 +29,18 @@ while [[ "$1" != "" ]]; do
   shift
 done
 
+echo ""
 echo "Install prefix set to: $PREFIX"
+echo "GUI Mode: $ENABLE_GUI"
+echo "Headless Mode: $ENABLE_HEADLESS"
 
-# Required binaries and minimum versions
-REQUIRED_BINS=("zsh" "git" "make" "dialog" "bash" "coreutils")
+# Required binaries
+REQUIRED_BINS=("zsh" "git" "make" "bash" "coreutils")
+[[ "$ENABLE_GUI" == "true" ]] && REQUIRED_BINS+=("dialog")
 
-MISSING=0
 echo ""
 echo "Checking required dependencies:"
+MISSING=0
 for BIN in "${REQUIRED_BINS[@]}"; do
   if ! command -v "$BIN" >/dev/null 2>&1; then
     echo "  ✗ $BIN not found"
@@ -42,11 +56,38 @@ if [[ $MISSING -eq 1 ]]; then
   echo "Error: One or more dependencies are missing."
   echo "Please install the missing tools and try again."
   exit 1
-else
-  echo ""
-  echo "All required dependencies found."
+fi
+
+# Create /etc config if not present
+echo ""
+if [[ ! -f "$CONFIG_FILE" ]]; then
+  echo "Creating global config at $CONFIG_FILE..."
+  sudo touch "$CONFIG_FILE"
+fi
+
+echo "Writing settings to $CONFIG_FILE..."
+sudo bash -c "cat > $CONFIG_FILE" <<EOF
+# Global NeoSorcerer configuration
+export PREFIX="$PREFIX"
+export CFLAGS="-O2 -march=native"
+export CXXFLAGS="-O2 -march=native"
+export MAKEFLAGS="-j\$(nproc)"
+export SPELLS_DIR="./spells"
+export INSTALLED_DIR="./var/installed"
+EOF
+
+# Create user-local config if not exists
+mkdir -p "$(dirname "$LOCAL_CONFIG")"
+if [[ ! -f "$LOCAL_CONFIG" ]]; then
+  echo "Creating user-local config at $LOCAL_CONFIG..."
+  cat > "$LOCAL_CONFIG" <<EOF
+# Local override settings for NeoSorcerer
+# Uncomment and modify as needed
+# export PREFIX="\$HOME/.local"
+# export MAKEFLAGS="-j2"
+EOF
 fi
 
 echo ""
-echo "You may now run:"
+echo "Configuration complete. You may now run:"
 echo "  make install PREFIX=$PREFIX"
