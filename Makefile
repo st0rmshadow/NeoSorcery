@@ -20,24 +20,9 @@ install-binaries:
 	install -m 755 cast-defaults $(BINDIR)/cast-defaults
 
 install-grimoire:
-	@echo "Installing/updating NeoSorcery grimoire…"
-	@if command -v git >/dev/null 2>&1 && \
-	   git ls-remote $(GRIMOIRE_REPO) HEAD >/dev/null 2>&1; then \
-	  if [ -d $(GRIMOIRE_DEST)/.git ]; then \
-	    echo " → Existing Git repo detected, resetting to origin/master"; \
-	    git -C $(GRIMOIRE_DEST) fetch --all && \
-	    git -C $(GRIMOIRE_DEST) reset --hard origin/master; \
-	  else \
-	    echo " → Cloning fresh from $(GRIMOIRE_REPO)"; \
-	    rm -rf $(GRIMOIRE_DEST) && \
-	    git clone $(GRIMOIRE_REPO) $(GRIMOIRE_DEST); \
-	  fi \
-	else \
-	  echo " → [offline] copying bundled grimoire/ → $(GRIMOIRE_DEST)"; \
-	  mkdir -p $(GRIMOIRE_DEST) && \
-	  cp -r grimoire/* $(GRIMOIRE_DEST)/; \
-	fi
-
+	@echo "Installing NeoSorcery grimoire from bundled source…"
+	mkdir -p $(GRIMOIRE_DEST)
+	cp -r grimoire/* $(GRIMOIRE_DEST)/	
 uninstall:
 	rm -f $(BINDIR)/neosorcery
 	rm -f $(BINDIR)/cast
