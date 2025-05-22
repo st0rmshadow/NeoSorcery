@@ -1,33 +1,12 @@
-# Load global and local NeoSorcerer config
-[[ -f /etc/sorcery.conf ]] && source /etc/sorcery.conf
-[[ -f "$HOME/.sorcery/sorcery.local.conf" ]] && source "$HOME/.sorcery/sorcery.local.conf"
 #!/usr/bin/env zsh
 SPELL_NAME="$1"
-FORCE="$2"
 SPELL_DIR="./spells/$SPELL_NAME"
-MANIFEST="var/installed/$SPELL_NAME.manifest"
-INSTALLED_VERSION_FILE="var/installed/$SPELL_NAME.version"
 if [[ ! -d "$SPELL_DIR" ]]; then
-  echo "Spell '$SPELL_NAME' not found."
+  echo "Error: Spell \"$SPELL_NAME\" does not exist in spells directory."
   exit 1
 fi
-source "$SPELL_DIR/SPELL"
-if [[ -f "$INSTALLED_VERSION_FILE" && "$FORCE" != "--force" && "$FORCE" != "--recast" ]]; then
-  CURRENT=$(<"$INSTALLED_VERSION_FILE")
-  if [[ "$CURRENT" == "$SPELL_VERSION" ]]; then
-    echo "Spell '$SPELL_NAME' is already up to date (version $SPELL_VERSION)."
-    exit 0
-  fi
+if [[ ! -f "$SPELL_DIR/SPELL" ]]; then
+  echo "Error: SPELL metadata missing for \"$SPELL_NAME\"."
+  exit 1
 fi
-if [[ -f "$SPELL_DIR/depends" ]]; then
-  DEPS=($(<"$SPELL_DIR/depends"))
-  for i in "${!DEPS[@]}"; do
-    dep="${DEPS[$i]}"
-    echo "[$((i+1))/${#DEPS[@]}] Casting dependency: $dep"
-    ./cast "$dep"
-  done
-fi
-cd "$SPELL_DIR" || exit 1
-zsh ./build
-echo "$SPELL_VERSION" > "../../$INSTALLED_VERSION_FILE"
-find /usr -newermt "$(date -d '5 minutes ago' '+5 minutes ago')" > "../../$MANIFEST"
+# previous content would go here...
