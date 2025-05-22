@@ -35,7 +35,7 @@ echo "GUI Mode: $ENABLE_GUI"
 echo "Headless Mode: $ENABLE_HEADLESS"
 
 # Required binaries
-REQUIRED_BINS=("zsh" "git" "make" "bash" "coreutils")
+REQUIRED_BINS=("zsh" "git" "make" "bash")
 [[ "$ENABLE_GUI" == "true" ]] && REQUIRED_BINS+=("dialog")
 
 echo ""
