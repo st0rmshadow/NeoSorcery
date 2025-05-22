@@ -10,6 +10,7 @@ install:
 	install -m 755 dispel_internal $(BINDIR)/dispel_internal
 	install -m 755 gaze $(BINDIR)/gaze
 	install -m 755 scribe $(BINDIR)/scribe
+	install -m 755 cast-defaults $(BINDIR)/cast-defaults
 	mkdir -p /etc/neosorcery/grimoire
 	cp -r grimoire/* /etc/neosorcery/grimoire/
 
@@ -24,3 +25,4 @@ uninstall:
 	sudo rm -f /etc/sorcery.conf
 	rm -f $$HOME/.sorcery/sorcery.local.conf
 	@echo "NeoSorcerer uninstalled and configuration removed."
+

@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+DEFAULTS_FILE="$HOME/.sorcery/spell.defaults"
+
+print_usage() {
+  echo "Usage: cast-defaults [--clear <spell>|--reset-all|--list]"
+  echo ""
+  echo "Options:"
+  echo "  --list         List current default spell sources (default behavior)"
+  echo "  --clear <spell> Remove default for a specific spell"
+  echo "  --reset-all    Remove all saved spell source defaults"
+  echo "  -h, --help     Show this help message"
+  exit 0
+}
+
+[[ "$1" == "-h" || "$1" == "--help" ]] && print_usage
+
+mkdir -p "$(dirname "$DEFAULTS_FILE")"
+[[ ! -f "$DEFAULTS_FILE" ]] && touch "$DEFAULTS_FILE"
+
+case "$1" in
+  --clear)
+    if [[ -z "$2" ]]; then
+      echo "Error: Please specify a spell to clear." >&2
+      exit 1
+    fi
+    grep -v "^$2=" "$DEFAULTS_FILE" > "$DEFAULTS_FILE.tmp" && mv "$DEFAULTS_FILE.tmp" "$DEFAULTS_FILE"
+    echo "Cleared default for '$2'"
+    ;;
+  --reset-all)
+    > "$DEFAULTS_FILE"
+    echo "All spell source defaults cleared."
+    ;;
+  --list|"")
+    if [[ ! -s "$DEFAULTS_FILE" ]]; then
+      echo "No spell source defaults are set."
+    else
+      echo "Current spell source defaults:"
+      cat "$DEFAULTS_FILE"
+    fi
+    ;;
+  *)
+    echo "Unknown option: $1"
+    print_usage
+    ;;
+esac
