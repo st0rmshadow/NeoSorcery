@@ -1,0 +1,52 @@
+#!/bin/bash
+
+echo "Configuring NeoSorcery..."
+
+# Default install prefix
+PREFIX="/usr"
+
+# Parse options
+while [[ "$1" != "" ]]; do
+  case $1 in
+    --prefix )
+      shift
+      PREFIX=$1
+      ;;
+    * )
+      echo "Unknown option: $1"
+      ;;
+  esac
+  shift
+done
+
+echo "Install prefix set to: $PREFIX"
+
+# Required binaries and minimum versions
+REQUIRED_BINS=("zsh" "git" "make" "dialog" "bash" "coreutils")
+
+MISSING=0
+echo ""
+echo "Checking required dependencies:"
+for BIN in "${REQUIRED_BINS[@]}"; do
+  if ! command -v "$BIN" >/dev/null 2>&1; then
+    echo "  ✗ $BIN not found"
+    MISSING=1
+  else
+    VERSION=$($BIN --version 2>/dev/null | head -n 1)
+    echo "  ✓ $BIN found: $VERSION"
+  fi
+done
+
+if [[ $MISSING -eq 1 ]]; then
+  echo ""
+  echo "Error: One or more dependencies are missing."
+  echo "Please install the missing tools and try again."
+  exit 1
+else
+  echo ""
+  echo "All required dependencies found."
+fi
+
+echo ""
+echo "You may now run:"
+echo "  make install PREFIX=$PREFIX"

@@ -1,13 +1,17 @@
-# Load global and local NeoSorcerer config
-[[ -f /etc/sorcery.conf ]] && source /etc/sorcery.conf
-[[ -f "$HOME/.sorcery/sorcery.local.conf" ]] && source "$HOME/.sorcery/sorcery.local.conf"
 #!/usr/bin/env zsh
-PACKAGE=$1
+PACKAGE="$1"
 MANIFEST="var/installed/$PACKAGE.manifest"
-if [[ ! -f "$MANIFEST" ]]; then
-  echo "No manifest found for $PACKAGE"
+
+if [[ -z "$PACKAGE" ]]; then
+  echo "Error: No package name provided." >&2
   exit 1
 fi
+
+if [[ ! -f "$MANIFEST" ]]; then
+  echo "Error: No manifest found for \"$PACKAGE\". Nothing to dispel." >&2
+  exit 1
+fi
+
 while read -r file; do
   sudo rm -vf "$file"
 done < "$MANIFEST"

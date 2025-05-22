@@ -1,12 +1,20 @@
 #!/usr/bin/env zsh
 SPELL_NAME="$1"
 SPELL_DIR="./spells/$SPELL_NAME"
+
+if [[ -z "$SPELL_NAME" ]]; then
+  echo "Error: No spell name provided." >&2
+  exit 1
+fi
+
 if [[ ! -d "$SPELL_DIR" ]]; then
-  echo "Error: Spell \"$SPELL_NAME\" does not exist in spells directory."
+  echo "Error: Spell \"$SPELL_NAME\" does not exist in spells directory." >&2
   exit 1
 fi
+
 if [[ ! -f "$SPELL_DIR/SPELL" ]]; then
-  echo "Error: SPELL metadata missing for \"$SPELL_NAME\"."
+  echo "Error: SPELL metadata missing for \"$SPELL_NAME\"." >&2
   exit 1
 fi
-# previous content would go here...
+
+echo "Casting $SPELL_NAME..."

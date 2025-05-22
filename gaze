@@ -1,10 +1,12 @@
-# Load global and local NeoSorcerer config
-[[ -f /etc/sorcery.conf ]] && source /etc/sorcery.conf
-[[ -f "$HOME/.sorcery/sorcery.local.conf" ]] && source "$HOME/.sorcery/sorcery.local.conf"
 #!/usr/bin/env zsh
 if [[ -z "$1" ]]; then
   echo "Installed packages:"
   ls var/installed | sed 's/.manifest$//'
 else
-  cat "var/installed/$1.manifest"
+  MANIFEST="var/installed/$1.manifest"
+  if [[ ! -f "$MANIFEST" ]]; then
+    echo "Error: No manifest found for $1" >&2
+    exit 1
+  fi
+  cat "$MANIFEST"
 fi

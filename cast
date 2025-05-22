@@ -1,9 +1,15 @@
-# Load global and local NeoSorcerer config
+#!/usr/bin/env zsh
 [[ -f /etc/sorcery.conf ]] && source /etc/sorcery.conf
 [[ -f "$HOME/.sorcery/sorcery.local.conf" ]] && source "$HOME/.sorcery/sorcery.local.conf"
-#!/usr/bin/env zsh
+
+SPELL_NAME="$1"
+if [[ -z "$SPELL_NAME" ]]; then
+  echo "Error: No spell name provided." >&2
+  exit 1
+fi
+
 if command -v screen >/dev/null; then
-  screen -dmS cast_$1 zsh -c "./cast_internal $1"
+  screen -dmS cast_$SPELL_NAME zsh -c "./cast_internal $SPELL_NAME"
 else
-  ./cast_internal $1
+  ./cast_internal "$SPELL_NAME"
 fi

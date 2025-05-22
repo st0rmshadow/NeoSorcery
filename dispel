@@ -1,9 +1,12 @@
-# Load global and local NeoSorcerer config
-[[ -f /etc/sorcery.conf ]] && source /etc/sorcery.conf
-[[ -f "$HOME/.sorcery/sorcery.local.conf" ]] && source "$HOME/.sorcery/sorcery.local.conf"
 #!/usr/bin/env zsh
+PACKAGE="$1"
+if [[ -z "$PACKAGE" ]]; then
+  echo "Error: No package name provided to dispel." >&2
+  exit 1
+fi
+
 if command -v screen >/dev/null; then
-  screen -dmS dispel_$1 zsh -c "./dispel_internal $1"
+  screen -dmS dispel_$PACKAGE zsh -c "./dispel_internal $PACKAGE"
 else
-  ./dispel_internal $1
+  ./dispel_internal "$PACKAGE"
 fi
