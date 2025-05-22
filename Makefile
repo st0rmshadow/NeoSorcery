@@ -1,5 +1,5 @@
 PREFIX ?= /usr
-BINDIR = $(PREFIX)/bin
+BINDIR = $(PREFIX)/sbin
 
 GRIMOIRE_REPO  = https://github.com/st0rmshadow/NeoSorcery_grimoire.git
 GRIMOIRE_DEST  = /etc/neosorcery/grimoire
