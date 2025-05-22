@@ -7,9 +7,9 @@ if [[ $# -eq 0 ]]; then
 Usage: scribe <command>
 
 Commands:
-  update    Run the normal “update” behavior (what you had before)
+  update    Run the normal “update”
 
-Run “scribe update” to sync your bundled grimoire.
+Run “scribe update” to sync your system grimoire.
 EOF
   exit 0
 fi
