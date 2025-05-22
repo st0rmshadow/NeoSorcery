@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
-
+# will eventually add lines to only happen when debugging right now always on
+set -x 
 # ─────────────────────────────────────────────────────────────
 # If no subcommand is given, print a little help/usage and exit
 if [[ $# -eq 0 ]]; then
