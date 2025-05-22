@@ -1,4 +1,10 @@
 #!/usr/bin/env zsh
+# Require root or sudo
+if [[ "$EUID" -ne 0 ]]; then
+  echo "Error: This command must be run as root or with sudo." >&2
+  exit 1
+fi
+
 
 SPELL_NAME="$1"
 SOURCE_GRIMOIRE="$2"
