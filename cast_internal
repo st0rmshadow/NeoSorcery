@@ -3,44 +3,41 @@
 SPELL_NAME="$1"
 SOURCE_GRIMOIRE="$2"
 
-# Help/usage
+DEFAULTS_FILE="$HOME/.sorcery/spell.defaults"
+VERSIONS_FILE="$HOME/.sorcery/spell.versions"
+
+mkdir -p "$(dirname "$DEFAULTS_FILE")"
+touch "$DEFAULTS_FILE" "$VERSIONS_FILE"
+
+# Help
 if [[ "$SPELL_NAME" == "-h" || "$SPELL_NAME" == "--help" || "$SPELL_NAME" == "help" ]]; then
   echo "Usage: cast_internal <spell> [source]"
   echo ""
   echo "Options:"
-  echo "  -h, --help     Show this help message and exit"
-  echo "  source         Optional grimoire path or keyword: 'user', 'global', or custom path"
-  echo ""
-  echo "Description:"
-  echo "  Installs a spell from the layered grimoire model:"
-  echo "    ~/.sorcery/grimoire/"
-  echo "    ~/.sorcery/grimoire-alt/*/"
-  echo "    /etc/neosorcery/grimoire/"
-  echo "    /opt/grimoire-*/"
+  echo "  source   Optional: user/global or a full grimoire path"
+  echo "  -h       Show this help message"
   exit 0
 fi
 
-# Validate input
 if [[ -z "$SPELL_NAME" ]]; then
   echo "Error: No spell name provided." >&2
   exit 1
 fi
 
-# Define search layers
+# Gather grimoire layers
 LAYERS=()
 [[ -d "$HOME/.sorcery/grimoire" ]] && LAYERS+=("$HOME/.sorcery/grimoire")
 for alt in "$HOME/.sorcery/grimoire-alt/"*; do [[ -d "$alt" ]] && LAYERS+=("$alt"); done
 [[ -d "/etc/neosorcery/grimoire" ]] && LAYERS+=("/etc/neosorcery/grimoire")
 for opt in /opt/grimoire-*; do [[ -d "$opt" ]] && LAYERS+=("$opt"); done
 
-# Resolve spell location
+# Find spell
 FOUND_PATHS=()
 if [[ -n "$SOURCE_GRIMOIRE" ]]; then
-  # explicit path
   if [[ "$SOURCE_GRIMOIRE" == "user" ]]; then
-    [[ -d "$HOME/.sorcery/grimoire/$SPELL_NAME" ]] && SPELL_DIR="$HOME/.sorcery/grimoire/$SPELL_NAME"
+    SPELL_DIR="$HOME/.sorcery/grimoire/$SPELL_NAME"
   elif [[ "$SOURCE_GRIMOIRE" == "global" ]]; then
-    [[ -d "/etc/neosorcery/grimoire/$SPELL_NAME" ]] && SPELL_DIR="/etc/neosorcery/grimoire/$SPELL_NAME"
+    SPELL_DIR="/etc/neosorcery/grimoire/$SPELL_NAME"
   elif [[ -d "$SOURCE_GRIMOIRE/$SPELL_NAME" ]]; then
     SPELL_DIR="$SOURCE_GRIMOIRE/$SPELL_NAME"
   fi
@@ -49,12 +46,10 @@ else
     [[ -d "$LAYER/$SPELL_NAME" ]] && FOUND_PATHS+=("$LAYER/$SPELL_NAME")
   done
   if [[ ${#FOUND_PATHS[@]} -eq 1 ]]; then
-    SPELL_DIR="$FOUND_PATHS[1]"
+    SPELL_DIR="${FOUND_PATHS[1]}"
   elif [[ ${#FOUND_PATHS[@]} -gt 1 ]]; then
-    echo "Spell '$SPELL_NAME' is found in multiple locations:"
-    for i in {1..${#FOUND_PATHS[@]}}; do
-      echo "  [$i] ${FOUND_PATHS[$i]}"
-    done
+    echo "Spell '$SPELL_NAME' found in multiple locations:"
+    for i in {1..${#FOUND_PATHS[@]}}; do echo "  [$i] ${FOUND_PATHS[$i]}"; done
     echo -n "Choose one (default 1): "
     read -r SELECT
     [[ -z "$SELECT" ]] && SELECT=1
@@ -62,25 +57,38 @@ else
   fi
 fi
 
-# Error out if not found
 if [[ -z "$SPELL_DIR" || ! -d "$SPELL_DIR" ]]; then
-  echo "Error: Spell '$SPELL_NAME' not found in any known grimoire." >&2
+  echo "Error: Spell '$SPELL_NAME' not found." >&2
   exit 1
 fi
 
 if [[ ! -f "$SPELL_DIR/SPELL" ]]; then
-  echo "Error: SPELL metadata missing for '$SPELL_NAME' in $SPELL_DIR." >&2
+  echo "Error: SPELL metadata missing." >&2
   exit 1
 fi
 
-# Track default preference
-DEFAULTS_FILE="$HOME/.sorcery/spell.defaults"
-mkdir -p "$(dirname "$DEFAULTS_FILE")"
-if ! grep -q "^$SPELL_NAME=" "$DEFAULTS_FILE" 2>/dev/null; then
-  echo "$SPELL_NAME=$SPELL_DIR" >> "$DEFAULTS_FILE"
-fi
+# Determine version
+SPELL_VERSION=$(grep SPELL_VERSION "$SPELL_DIR/SPELL" | cut -d'"' -f2)
+[[ -z "$SPELL_VERSION" ]] && SPELL_VERSION="unknown"
 
-# Execute build
-echo "Casting $SPELL_NAME from: $SPELL_DIR"
+INSTALL_MANIFEST="var/installed/$SPELL_NAME-$SPELL_VERSION.manifest"
+
+# Backup if another version is already installed
+for OLD_MANIFEST in var/installed/$SPELL_NAME-*.manifest; do
+  [[ -f "$OLD_MANIFEST" ]] || continue
+  echo "Backup: preserving installed version ${OLD_MANIFEST##*-}"
+  mv "$OLD_MANIFEST" "$OLD_MANIFEST.bak"
+done
+
+# Update tracking files
+sed -i.bak "/^$SPELL_NAME=/d" "$DEFAULTS_FILE"
+echo "$SPELL_NAME=$SPELL_DIR" >> "$DEFAULTS_FILE"
+
+grep -q "^$SPELL_NAME:" "$VERSIONS_FILE" || echo "$SPELL_NAME:" >> "$VERSIONS_FILE"
+grep -q "$SPELL_VERSION" <<<"$(grep ^$SPELL_NAME: "$VERSIONS_FILE")" ||   sed -i.bak "s|^$SPELL_NAME:.*|$SPELL_NAME: $(grep ^$SPELL_NAME: "$VERSIONS_FILE" | cut -d: -f2-),$SPELL_VERSION|" "$VERSIONS_FILE"
+
+# Install
+echo "Casting $SPELL_NAME version $SPELL_VERSION from $SPELL_DIR"
 cd "$SPELL_DIR" || exit 1
 zsh ./build
+find /usr -newermt "$(date -d '5 minutes ago' '+%Y-%m-%d %H:%M:%S')" > "$INSTALL_MANIFEST"

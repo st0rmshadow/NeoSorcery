@@ -1,30 +1,28 @@
+#!/usr/bin/env zsh
+DEFAULTS_FILE="$HOME/.sorcery/spell.defaults"
 # Resolve grimoire paths
 if [[ "$1" == "-h" || "$1" == "--help" || "$1" == "help" ]]; then
-  echo "Usage: gaze [spell]
-Options:
-  -h, --help     Show this help message and exit
-
-Description:
-  Lists installed spells or details for a specific one."
+  echo "Usage: gaze [spell]"
+  echo "Options:"
+  echo "  -h, --help     Show this help message and exit"
   exit 0
 fi
 
-if [[ -d "$HOME/.sorcery/grimoire" ]]; then
-  GRIMOIRE_PATH_USER="$HOME/.sorcery/grimoire"
-else
-  GRIMOIRE_PATH_USER=""
-fi
-GRIMOIRE_PATH_GLOBAL="/etc/neosorcery/grimoire"
-
-#!/usr/bin/env zsh
 if [[ -z "$1" ]]; then
   echo "Installed packages:"
   ls var/installed | sed 's/.manifest$//'
 else
   MANIFEST="var/installed/$1.manifest"
-  if [[ ! -f "$MANIFEST" ]]; then
-    echo "Error: No manifest found for $1" >&2
-    exit 1
-  fi
+  [[ ! -f "$MANIFEST" ]] && echo "No manifest found for $1" && exit 1
+  echo "Source:"
+  grep "^$1=" "$DEFAULTS_FILE" 2>/dev/null || echo "unknown"
+  echo ""
   cat "$MANIFEST"
+fi
+
+
+echo ""
+VERSIONS_FILE="$HOME/.sorcery/spell.versions"
+if [[ -f "$VERSIONS_FILE" ]]; then
+  grep "^$1:" "$VERSIONS_FILE"
 fi
