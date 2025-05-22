@@ -18,7 +18,7 @@ GRIMOIRE_PATH_GLOBAL="/etc/neosorcery/grimoire"
 
 #!/usr/bin/env zsh
 GRIMOIRE_URL="https://github.com/st0rmshadow/NeoSorcerer_grimoire.git"
-GRIMOIRE_DIR=""$GRIMOIRE_PATH_USER" "$GRIMOIRE_PATH_GLOBAL""
+GRIMOIRE_DIR="$GRIMOIRE_PATH_GLOBAL"
 echo "Updating spells from $GRIMOIRE_URL..."
 if [[ -d "$GRIMOIRE_DIR/.git" ]]; then
   git -C "$GRIMOIRE_DIR" pull && echo "Pulled latest changes."
