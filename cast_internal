@@ -11,8 +11,8 @@ fi
 SPELL_NAME="$1"
 SOURCE_GRIMOIRE="$2"
 
-DEFAULTS_FILE="$HOME/.sorcery/spell.defaults"
-VERSIONS_FILE="$HOME/.sorcery/spell.versions"
+DEFAULTS_FILE="$HOME/.neosorcery/spell.defaults"
+VERSIONS_FILE="$HOME/.neosorcery/spell.versions"
 
 mkdir -p "$(dirname "$DEFAULTS_FILE")"
 touch "$DEFAULTS_FILE" "$VERSIONS_FILE"
@@ -35,8 +35,8 @@ fi
 echo "=== [cast_internal] Casting spell: $SPELL_NAME ==="
 # Gather grimoire layers
 LAYERS=()
-[[ -d "$HOME/.sorcery/grimoire" ]] && LAYERS+=("$HOME/.sorcery/grimoire")
-for alt in "$HOME/.sorcery/grimoire-alt/"*; do [[ -d "$alt" ]] && LAYERS+=("$alt"); done
+[[ -d "$HOME/.neosorcery/grimoire" ]] && LAYERS+=("$HOME/.neosorcery/grimoire")
+for alt in "$HOME/.neosorcery/grimoire-alt/"*; do [[ -d "$alt" ]] && LAYERS+=("$alt"); done
 [[ -d "/etc/neosorcery/grimoire" ]] && LAYERS+=("/etc/neosorcery/grimoire")
 for opt in /opt/grimoire-*; do [[ -d "$opt" ]] && LAYERS+=("$opt"); done
 
@@ -44,7 +44,7 @@ for opt in /opt/grimoire-*; do [[ -d "$opt" ]] && LAYERS+=("$opt"); done
 FOUND_PATHS=()
 if [[ -n "$SOURCE_GRIMOIRE" ]]; then
   if [[ "$SOURCE_GRIMOIRE" == "user" ]]; then
-    SPELL_DIR="$HOME/.sorcery/grimoire/$SPELL_NAME"
+    SPELL_DIR="$HOME/.neosorcery/grimoire/$SPELL_NAME"
   elif [[ "$SOURCE_GRIMOIRE" == "global" ]]; then
     SPELL_DIR="/etc/neosorcery/grimoire/$SPELL_NAME"
   elif [[ -d "$SOURCE_GRIMOIRE/$SPELL_NAME" ]]; then
