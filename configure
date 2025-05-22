@@ -91,3 +91,11 @@ fi
 echo ""
 echo "Configuration complete. You may now run:"
 echo "  make install PREFIX=$PREFIX"
+
+# Ensure /etc/neosorcery/grimoire exists
+echo "Ensuring grimoire directory exists at /etc/neosorcery/grimoire..."
+sudo mkdir -p /etc/neosorcery/grimoire
+sudo touch /etc/neosorcery/grimoire/.placeholder
+
+echo "Updating config file to reflect grimoire path..."
+sudo bash -c "echo 'export GRIMOIRE_PATH=/etc/neosorcery/grimoire' >> /etc/sorcery.conf"

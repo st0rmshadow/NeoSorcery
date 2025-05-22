@@ -10,6 +10,8 @@ install:
 	install -m 755 dispel_internal $(BINDIR)/dispel_internal
 	install -m 755 gaze $(BINDIR)/gaze
 	install -m 755 scribe $(BINDIR)/scribe
+	mkdir -p /etc/neosorcery/grimoire
+	cp -r grimoire/* /etc/neosorcery/grimoire/
 
 uninstall:
 	rm -f $(BINDIR)/neosorcery

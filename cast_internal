@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 SPELL_NAME="$1"
-SPELL_DIR="./spells/$SPELL_NAME"
+SPELL_DIR="/etc/neosorcery/grimoire/$SPELL_NAME"
 
 if [[ -z "$SPELL_NAME" ]]; then
   echo "Error: No spell name provided." >&2

@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 GRIMOIRE_URL="https://github.com/st0rmshadow/NeoSorcerer_grimoire.git"
-GRIMOIRE_DIR="./spells"
+GRIMOIRE_DIR="/etc/neosorcery/grimoire"
 echo "Updating spells from $GRIMOIRE_URL..."
 if [[ -d "$GRIMOIRE_DIR/.git" ]]; then
   git -C "$GRIMOIRE_DIR" pull && echo "Pulled latest changes."
