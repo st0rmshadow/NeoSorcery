@@ -1,28 +1,50 @@
 #!/usr/bin/env zsh
 DEFAULTS_FILE="$HOME/.sorcery/spell.defaults"
-# Resolve grimoire paths
-if [[ "$1" == "-h" || "$1" == "--help" || "$1" == "help" ]]; then
-  echo "Usage: gaze [spell]"
+VERSIONS_FILE="$HOME/.sorcery/spell.versions"
+
+SPELL="$1"
+TARGET="$2"
+
+if [[ "$SPELL" == "-h" || "$SPELL" == "--help" || "$SPELL" == "help" ]]; then
+  echo "Usage: gaze <spell> [file]"
+  echo ""
   echo "Options:"
   echo "  -h, --help     Show this help message and exit"
+  echo "  file           Optional: 'SPELL', 'build', 'depends', 'test'"
+  echo ""
+  echo "Description:"
+  echo "  Lists installed spell info or views a spell file from the grimoire."
   exit 0
 fi
 
-if [[ -z "$1" ]]; then
+if [[ -z "$SPELL" ]]; then
   echo "Installed packages:"
-  ls var/installed | sed 's/.manifest$//'
-else
-  MANIFEST="var/installed/$1.manifest"
-  [[ ! -f "$MANIFEST" ]] && echo "No manifest found for $1" && exit 1
-  echo "Source:"
-  grep "^$1=" "$DEFAULTS_FILE" 2>/dev/null || echo "unknown"
-  echo ""
-  cat "$MANIFEST"
+  ls var/installed 2>/dev/null | sed 's/.manifest$//'
+  exit 0
 fi
 
+# Determine source
+SPELL_DIR=$(grep "^$SPELL=" "$DEFAULTS_FILE" | cut -d= -f2-)
 
-echo ""
-VERSIONS_FILE="$HOME/.sorcery/spell.versions"
-if [[ -f "$VERSIONS_FILE" ]]; then
-  grep "^$1:" "$VERSIONS_FILE"
+if [[ -n "$TARGET" ]]; then
+  FILE_PATH="$SPELL_DIR/$TARGET"
+  if [[ -f "$FILE_PATH" ]]; then
+    echo "Showing $TARGET for $SPELL from $SPELL_DIR:"
+    echo "----------------------------------------"
+    cat "$FILE_PATH"
+  else
+    echo "Error: File '$TARGET' not found for spell '$SPELL' in $SPELL_DIR"
+    exit 1
+  fi
+else
+  MANIFEST="var/installed/$SPELL.manifest"
+  [[ ! -f "$MANIFEST" ]] && echo "No manifest found for $SPELL" && exit 1
+  echo "Source:"
+  grep "^$SPELL=" "$DEFAULTS_FILE" 2>/dev/null || echo "unknown"
+  echo ""
+  cat "$MANIFEST"
+  echo ""
+  if [[ -f "$VERSIONS_FILE" ]]; then
+    grep "^$SPELL:" "$VERSIONS_FILE"
+  fi
 fi
