@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh
+echo "toolchain is a metaspell. Run 'cast toolchain' to install dependencies."

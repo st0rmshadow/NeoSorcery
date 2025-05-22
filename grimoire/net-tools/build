@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+source ./SPELL
+BUILD_DIR="/tmp/build_net-tools"
+mkdir -p "$BUILD_DIR" && cd "$BUILD_DIR"
+echo "Fetching net-tools..."
+curl -LO "https://sourceforge.net/projects/net-tools/files/net-tools-2.10.0.tar.gz"
+echo "Extracting..."
+tar -xf *.tar.* || exit 1
+cd net-tools-2.10.0* || exit 1
+./configure --prefix=$PREFIX
+make -j$(nproc)
+sudo make install

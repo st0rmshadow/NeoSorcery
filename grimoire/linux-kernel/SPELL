@@ -1,0 +1,4 @@
+SPELL_NAME="linux-kernel"
+SPELL_VERSION="6.8"
+SPELL_SOURCE_TYPE="tarball"
+SPELL_URL="https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.8.tar.xz"

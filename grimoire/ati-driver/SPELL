@@ -1,0 +1,4 @@
+SPELL_NAME="ati-driver"
+SPELL_VERSION="23.30"
+SPELL_SOURCE_TYPE="tarball"
+SPELL_URL="https://drivers.amd.com/drivers/linux/amdgpu-pro-23.30-1686898-$(lsb_release -is)-$(lsb_release -rs).tar.xz"

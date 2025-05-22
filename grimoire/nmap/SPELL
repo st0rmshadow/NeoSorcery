@@ -1,0 +1,4 @@
+SPELL_NAME="nmap"
+SPELL_VERSION="7.93"
+SPELL_SOURCE_TYPE="tarball"
+SPELL_URL="https://nmap.org/dist/nmap-7.93.tar.bz2"

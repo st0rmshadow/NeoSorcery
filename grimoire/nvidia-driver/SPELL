@@ -1,0 +1,4 @@
+SPELL_NAME="nvidia-driver"
+SPELL_VERSION="535.86.10"
+SPELL_SOURCE_TYPE="tarball"
+SPELL_URL="https://us.download.nvidia.com/XFree86/Linux-x86_64/535.86.10/NVIDIA-Linux-x86_64-535.86.10.run"

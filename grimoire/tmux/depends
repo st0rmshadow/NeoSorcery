@@ -1,0 +1,4 @@
+gcc
+make
+libevent
+ncurses

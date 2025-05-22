@@ -1,0 +1,4 @@
+SPELL_NAME="wireshark"
+SPELL_VERSION="4.7.0"
+SPELL_SOURCE_TYPE="tarball"
+SPELL_URL="https://2.na.dl.wireshark.org/src/wireshark-4.7.0.tar.xz"

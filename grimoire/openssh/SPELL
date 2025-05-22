@@ -1,0 +1,4 @@
+SPELL_NAME="openssh"
+SPELL_VERSION="9.7p1"
+SPELL_SOURCE_TYPE="tarball"
+SPELL_URL="https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.7p1.tar.gz"

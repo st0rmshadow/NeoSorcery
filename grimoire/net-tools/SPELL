@@ -1,0 +1,4 @@
+SPELL_NAME="net-tools"
+SPELL_VERSION="2.10.0"
+SPELL_SOURCE_TYPE="tarball"
+SPELL_URL="https://sourceforge.net/projects/net-tools/files/net-tools-2.10.0.tar.gz"

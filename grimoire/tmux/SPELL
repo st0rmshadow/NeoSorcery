@@ -1,0 +1,4 @@
+SPELL_NAME="tmux"
+SPELL_VERSION="3.4"
+SPELL_SOURCE_TYPE="tarball"
+SPELL_URL="https://github.com/tmux/tmux/releases/download/3.4/tmux-3.4.tar.gz"

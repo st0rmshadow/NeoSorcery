@@ -1,0 +1,6 @@
+gcc
+make
+glibc
+libpcap
+glib
+cmake

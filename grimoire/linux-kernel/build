@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+source ./SPELL
+BUILD_DIR="/tmp/build_linux-kernel"
+mkdir -p "$BUILD_DIR" && cd "$BUILD_DIR"
+echo "Fetching linux-kernel..."
+curl -LO "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.8.tar.xz"
+echo "Extracting..."
+tar -xf *.tar.* || exit 1
+cd linux-kernel-6.8* || exit 1
+
+make mrproper && make defconfig && make -j$(nproc)
+sudo make modules_install install

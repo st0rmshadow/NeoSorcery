@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+source ./SPELL
+BUILD_DIR="/tmp/build_nmap"
+mkdir -p "$BUILD_DIR" && cd "$BUILD_DIR"
+echo "Fetching nmap..."
+curl -LO "https://nmap.org/dist/nmap-7.93.tar.bz2"
+echo "Extracting..."
+tar -xf *.tar.* || exit 1
+cd nmap-7.93* || exit 1
+./configure --prefix=$PREFIX
+make -j$(nproc)
+sudo make install

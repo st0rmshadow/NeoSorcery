@@ -1,0 +1,4 @@
+SPELL_NAME="netcat"
+SPELL_VERSION="0.7.1"
+SPELL_SOURCE_TYPE="tarball"
+SPELL_URL="https://github.com/diegocr/netcat/archive/refs/tags/netcat-0.7.1.tar.gz"
