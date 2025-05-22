@@ -1,4 +1,6 @@
 #!/usr/bin/env zsh
+# Turn on command tracking We eventually move this to debug option 
+set -x
 # Require root or sudo
 if [[ "$EUID" -ne 0 ]]; then
   echo "Error: This command must be run as root or with sudo." >&2
@@ -29,7 +31,8 @@ if [[ -z "$SPELL_NAME" ]]; then
   echo "Error: No spell name provided." >&2
   exit 1
 fi
-
+# High-level start message
+echo "=== [cast_internal] Casting spell: $SPELL_NAME ==="
 # Gather grimoire layers
 LAYERS=()
 [[ -d "$HOME/.sorcery/grimoire" ]] && LAYERS+=("$HOME/.sorcery/grimoire")
@@ -98,3 +101,5 @@ echo "Casting $SPELL_NAME version $SPELL_VERSION from $SPELL_DIR"
 cd "$SPELL_DIR" || exit 1
 zsh ./build
 find /usr -newermt "$(date -d '5 minutes ago' '+%Y-%m-%d %H:%M:%S')" > "$INSTALL_MANIFEST"
+# final success message
+echo "✅ Spell '$SPELL_NAME' successfully cast!"
