@@ -36,7 +36,6 @@ echo "=== [cast_internal] Casting spell: $SPELL_NAME ==="
 # Gather grimoire layers
 LAYERS=()
 [[ -d "$HOME/.neosorcery/grimoire" ]] && LAYERS+=("$HOME/.neosorcery/grimoire")
-for alt in "$HOME/.neosorcery/grimoire-alt/"*; do [[ -d "$alt" ]] && LAYERS+=("$alt"); done
 [[ -d "/etc/neosorcery/grimoire" ]] && LAYERS+=("/etc/neosorcery/grimoire")
 for opt in /opt/grimoire-*; do [[ -d "$opt" ]] && LAYERS+=("$opt"); done
 
