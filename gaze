@@ -1,4 +1,14 @@
 # Resolve grimoire paths
+if [[ "$1" == "-h" || "$1" == "--help" || "$1" == "help" ]]; then
+  echo "Usage: gaze [spell]
+Options:
+  -h, --help     Show this help message and exit
+
+Description:
+  Lists installed spells or details for a specific one."
+  exit 0
+fi
+
 if [[ -d "$HOME/.sorcery/grimoire" ]]; then
   GRIMOIRE_PATH_USER="$HOME/.sorcery/grimoire"
 else
