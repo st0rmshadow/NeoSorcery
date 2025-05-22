@@ -1,3 +1,6 @@
+# Load global and local NeoSorcerer config
+[[ -f /etc/sorcery.conf ]] && source /etc/sorcery.conf
+[[ -f "$HOME/.sorcery/sorcery.local.conf" ]] && source "$HOME/.sorcery/sorcery.local.conf"
 #!/usr/bin/env zsh
 if command -v screen >/dev/null; then
   screen -dmS cast_$1 zsh -c "./cast_internal $1"

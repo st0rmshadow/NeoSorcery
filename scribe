@@ -1,7 +1,9 @@
+# Load global and local NeoSorcerer config
+[[ -f /etc/sorcery.conf ]] && source /etc/sorcery.conf
+[[ -f "$HOME/.sorcery/sorcery.local.conf" ]] && source "$HOME/.sorcery/sorcery.local.conf"
 #!/usr/bin/env zsh
 GRIMOIRE_URL="https://github.com/st0rmshadow/NeoSorcerer_grimoire.git"
 GRIMOIRE_DIR="./spells"
-echo "Updating spells from $GRIMOIRE_URL..."
 if [[ -d "$GRIMOIRE_DIR/.git" ]]; then
   git -C "$GRIMOIRE_DIR" pull
 else
