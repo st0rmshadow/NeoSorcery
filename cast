@@ -27,6 +27,18 @@ if [[ -z "$SPELL_NAME" ]]; then
   exit 1
 fi
 
+# --- new existence check: ---
+# make sure the spell actually lives in one of the grimoire dirs
+if [[ -n "$GRIMOIRE_PATH_USER" && -e "$GRIMOIRE_PATH_USER/$SPELL_NAME" ]]; then
+  :  # found in user grimoire
+elif [[ -e "$GRIMOIRE_PATH_GLOBAL/$SPELL_NAME" ]]; then
+  :  # found in global grimoire
+else
+  echo "Error: Spell '$SPELL_NAME' not found in grimoire." >&2
+  exit 1
+fi
+# ----------------------------
+
 if command -v screen >/dev/null; then
   screen -dmS cast_$SPELL_NAME zsh -c "cast_internal $SPELL_NAME"
 else
