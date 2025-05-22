@@ -6,7 +6,9 @@ GRIMOIRE_URL="https://github.com/st0rmshadow/NeoSorcerer_grimoire.git"
 GRIMOIRE_DIR="./spells"
 if [[ -d "$GRIMOIRE_DIR/.git" ]]; then
   git -C "$GRIMOIRE_DIR" pull
+echo "Pulled latest changes from $GRIMOIRE_URL"
 else
   rm -rf "$GRIMOIRE_DIR"
   git clone "$GRIMOIRE_URL" "$GRIMOIRE_DIR"
+echo "Cloned grimoire to $GRIMOIRE_DIR"
 fi

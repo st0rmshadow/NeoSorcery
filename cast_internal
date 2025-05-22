@@ -20,7 +20,12 @@ if [[ -f "$INSTALLED_VERSION_FILE" && "$FORCE" != "--force" && "$FORCE" != "--re
   fi
 fi
 if [[ -f "$SPELL_DIR/depends" ]]; then
-  while read -r dep; do ./cast "$dep"; done < "$SPELL_DIR/depends"
+  DEPS=($(<"$SPELL_DIR/depends"))
+  for i in "${!DEPS[@]}"; do
+    dep="${DEPS[$i]}"
+    echo "[$((i+1))/${#DEPS[@]}] Casting dependency: $dep"
+    ./cast "$dep"
+  done
 fi
 cd "$SPELL_DIR" || exit 1
 zsh ./build
