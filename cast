@@ -60,7 +60,7 @@ fi
 # ----------------------------
 
 if command -v screen >/dev/null; then
-  screen -dmS cast_$SPELL_NAME zsh -c "cast_internal $SPELL_NAME"
+  screen -S cast_$SPELL_NAME zsh -c "cast_internal $SPELL_NAME"
 else
   cast_internal "$SPELL_NAME"
 fi
