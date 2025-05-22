@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 # Resolve grimoire paths
 if [[ "$1" == "-h" || "$1" == "--help" || "$1" == "help" ]]; then
   echo "Usage: cast <spell>
@@ -27,7 +28,7 @@ if [[ -z "$SPELL_NAME" ]]; then
 fi
 
 if command -v screen >/dev/null; then
-  screen -dmS cast_$SPELL_NAME zsh -c "./cast_internal $SPELL_NAME"
+  screen -dmS cast_$SPELL_NAME zsh -c "cast_internal $SPELL_NAME"
 else
-  ./cast_internal "$SPELL_NAME"
+  cast_internal "$SPELL_NAME"
 fi
