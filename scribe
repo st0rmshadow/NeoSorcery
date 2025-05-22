@@ -1,4 +1,25 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
+
+# ─────────────────────────────────────────────────────────────
+# If no subcommand is given, print a little help/usage and exit
+if [[ $# -eq 0 ]]; then
+  cat <<EOF
+Usage: scribe <command>
+
+Commands:
+  update    Run the normal “update” behavior (what you had before)
+
+Run “scribe update” to sync your bundled grimoire.
+EOF
+  exit 0
+fi
+
+# ─────────────────────────────────────────────────────────────
+# Only “update” is supported today; anything else is an error
+case "$1" in
+  update) ;;                                 # fall through to the existing logic
+  *) echo "Error: Unknown command '$1'" >&2; exit 1 ;;
+esac
 
 # Require root
 if [[ "$EUID" -ne 0 ]]; then
