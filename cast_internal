@@ -78,7 +78,7 @@ fi
 SPELL_VERSION=$(grep SPELL_VERSION "$SPELL_DIR/SPELL" | cut -d'"' -f2)
 [[ -z "$SPELL_VERSION" ]] && SPELL_VERSION="unknown"
 
-INSTALL_MANIFEST="var/installed/$SPELL_NAME-$SPELL_VERSION.manifest"
+INSTALL_MANIFEST="var/neosorcery/installed/$SPELL_NAME-$SPELL_VERSION.manifest"
 
 # Backup if another version is already installed
 for OLD_MANIFEST in var/installed/$SPELL_NAME-*.manifest; do

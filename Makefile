@@ -1,6 +1,7 @@
 PREFIX ?= /usr
 BINDIR = $(PREFIX)/sbin
-
+LOGDIR = var/log/
+INSTALL_LOG = $LOGDIR/installed
 GRIMOIRE_REPO  = https://github.com/st0rmshadow/NeoSorcery_grimoire.git
 GRIMOIRE_DEST  = /etc/neosorcery/grimoire
 
@@ -10,6 +11,8 @@ install: install-binaries install-grimoire
 
 install-binaries:
 	install -d $(BINDIR)
+	install -d $(LOGDIR)
+	install -d $(INSTALL_LOG)
 	install -m 755 neosorcery $(BINDIR)/neosorcery
 	install -m 755 cast $(BINDIR)/cast
 	install -m 755 cast_internal $(BINDIR)/cast_internal
