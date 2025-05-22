@@ -31,6 +31,6 @@ uninstall:
 	rm -f $(BINDIR)/dispel_internal
 	rm -f $(BINDIR)/gaze
 	rm -f $(BINDIR)/scribe
-	sudo rm -f /etc/sorcery.conf
-	rm -f $$HOME/.sorcery/sorcery.local.conf
+	sudo rm -f /etc/neosorcery.conf
+	rm -f $$HOME/.neosorcery/neosorcery.local.conf
 	@echo "NeoSorcerer uninstalled and configuration removed."

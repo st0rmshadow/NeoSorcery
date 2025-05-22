@@ -6,8 +6,8 @@ echo "Configuring NeoSorcery..."
 PREFIX="/usr"
 ENABLE_GUI=true
 ENABLE_HEADLESS=false
-CONFIG_FILE="/etc/sorcery.conf"
-LOCAL_CONFIG="$HOME/.sorcery/sorcery.local.conf"
+CONFIG_FILE="/etc/neosorcery.conf"
+LOCAL_CONFIG="$HOME/.neosorcery/neosorcery.local.conf"
 
 # Parse command-line options
 while [[ "$1" != "" ]]; do

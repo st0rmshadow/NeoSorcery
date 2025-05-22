@@ -1,6 +1,6 @@
 # Load global and local NeoSorcerer config
-[[ -f /etc/sorcery.conf ]] && source /etc/sorcery.conf
-[[ -f "$HOME/.sorcery/sorcery.local.conf" ]] && source "$HOME/.sorcery/sorcery.local.conf"
+[[ -f /etc/neosorcery.conf ]] && source /etc/neosorcery.conf
+[[ -f "$HOME/.neosorcery/neosorcery.local.conf" ]] && source "$HOME/.neosorcery/neosorcery.local.conf"
 #!/usr/bin/env bash
 main_menu() {
   while true; do
