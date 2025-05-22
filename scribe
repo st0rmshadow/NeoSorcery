@@ -1,6 +1,14 @@
+# Resolve grimoire paths
+if [[ -d "$HOME/.sorcery/grimoire" ]]; then
+  GRIMOIRE_PATH_USER="$HOME/.sorcery/grimoire"
+else
+  GRIMOIRE_PATH_USER=""
+fi
+GRIMOIRE_PATH_GLOBAL="/etc/neosorcery/grimoire"
+
 #!/usr/bin/env zsh
 GRIMOIRE_URL="https://github.com/st0rmshadow/NeoSorcerer_grimoire.git"
-GRIMOIRE_DIR="/etc/neosorcery/grimoire"
+GRIMOIRE_DIR=""$GRIMOIRE_PATH_USER" "$GRIMOIRE_PATH_GLOBAL""
 echo "Updating spells from $GRIMOIRE_URL..."
 if [[ -d "$GRIMOIRE_DIR/.git" ]]; then
   git -C "$GRIMOIRE_DIR" pull && echo "Pulled latest changes."

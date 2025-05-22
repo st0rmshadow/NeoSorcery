@@ -1,6 +1,14 @@
+# Resolve grimoire paths
+if [[ -d "$HOME/.sorcery/grimoire" ]]; then
+  GRIMOIRE_PATH_USER="$HOME/.sorcery/grimoire"
+else
+  GRIMOIRE_PATH_USER=""
+fi
+GRIMOIRE_PATH_GLOBAL="/etc/neosorcery/grimoire"
+
 #!/usr/bin/env zsh
 SPELL_NAME="$1"
-SPELL_DIR="/etc/neosorcery/grimoire/$SPELL_NAME"
+SPELL_DIR=""$GRIMOIRE_PATH_USER" "$GRIMOIRE_PATH_GLOBAL"/$SPELL_NAME"
 
 if [[ -z "$SPELL_NAME" ]]; then
   echo "Error: No spell name provided." >&2

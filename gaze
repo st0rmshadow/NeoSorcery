@@ -1,3 +1,11 @@
+# Resolve grimoire paths
+if [[ -d "$HOME/.sorcery/grimoire" ]]; then
+  GRIMOIRE_PATH_USER="$HOME/.sorcery/grimoire"
+else
+  GRIMOIRE_PATH_USER=""
+fi
+GRIMOIRE_PATH_GLOBAL="/etc/neosorcery/grimoire"
+
 #!/usr/bin/env zsh
 if [[ -z "$1" ]]; then
   echo "Installed packages:"
